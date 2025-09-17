@@ -6,7 +6,6 @@ on:
       - main
       - infra/runner-toevoegen
       - dev
-      - bugfix/YML1
   pull_request:
     branches:
       - main
