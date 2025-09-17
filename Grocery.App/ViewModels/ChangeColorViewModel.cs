@@ -22,7 +22,17 @@ namespace Grocery.App.ViewModels
 
         partial void OnGroceryListChanged(GroceryList value)
         {
-            GroceryList = _groceryListService.Update(value);
+            var UpdatedList = _groceryListService.Update(value);
+
+            if (UpdatedList != null)
+            {
+                GroceryList = UpdatedList;
+            }
+            else
+            {
+                // throw error when update fails (prevent warnings in IDE)
+                throw new ArgumentNullException(nameof(UpdatedList)); 
+            }
         }
 
         [RelayCommand]
