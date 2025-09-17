@@ -5,13 +5,15 @@ on:
     branches:
       - main
       - infra/runner-toevoegen
+      - dev
   pull_request:
     branches:
       - main
+      - dev
  
 jobs:
   test:
-    runs-on: ubuntu-latest  # Of windows-latest/macOS-latest als specifiek platform nodig is
+    runs-on: windows-latest  # Of windows-latest/macOS-latest als specifiek platform nodig is
     steps:
       - name: Haal de repository op
         uses: actions/checkout@v4
@@ -28,7 +30,7 @@ jobs:
         run: dotnet restore
  
       - name: Bouw de applicatie
-        run: dotnet build --configuration Release --no-restore
+        run: dotnet build -f net8.0-android --configuration Release --no-restore
  
       - name: Voer unit tests uit
-        run: dotnet test --configuration Release --no-restore --no-build --verbosity normal
+        run: dotnet test -f net8.0-android --configuration Release --no-restore --no-build --verbosity normal
