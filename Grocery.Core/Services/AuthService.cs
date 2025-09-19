@@ -17,7 +17,7 @@ namespace Grocery.Core.Services
             Client? client = _clientService.Get(email);
 
             // Checks if client was found, and if password matches
-            if (client == null || PasswordHelper.VerifyPassword(password, client.Password)) return null;
+            if (client == null || PasswordHelper.VerifyPassword(password, client.Password!)) return null;
 
             // If everything is correct, Client is returned
             return client;
