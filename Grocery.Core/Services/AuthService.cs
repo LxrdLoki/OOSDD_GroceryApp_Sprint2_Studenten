@@ -13,13 +13,13 @@ namespace Grocery.Core.Services
         }
         public Client? Login(string email, string password)
         {
-            //Vraagt klantgegevens op
+            // Gets client data
             Client? client = _clientService.Get(email);
 
-            //Controlleerd of er een klant is gevonden, en/of als de wachtwoorden overeen komen.
-            if (client == null || PasswordHelper.VerifyPassword(password, client.Password)) return null;
+            // Checks if client was found, and if password matches
+            if (client == null || PasswordHelper.VerifyPassword(password, client.Password!)) return null;
 
-            //Alles klopt klantgegveens worden teruggeven.
+            // If everything is correct, Client is returned
             return client;
         }
     }

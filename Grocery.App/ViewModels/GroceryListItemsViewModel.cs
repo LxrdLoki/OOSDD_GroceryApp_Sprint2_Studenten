@@ -36,20 +36,20 @@ namespace Grocery.App.ViewModels
 
         private void GetAvailableProducts()
         {
-            //Maak de lijst AvailableProducts leeg
+            // Clear the list of AvailableProducts
             AvailableProducts.Clear();
 
-            //Haal de lijst met producten op
+            // Get list of al products
             var allProducts = _productService.GetAll();
             var groceryList = MyGroceryListItems;
 
             foreach (Product product in allProducts)
             {
 
-                // Controleer of het product al op de boodschappenlijst staat (via ProductId)
+                // Check if product is already in the groceryList (using productId)
                 bool isInGroceryList = groceryList.Any(listItem => listItem.ProductId == product.Id);
 
-                // Als het product niet in de lijst is en in stock is, voeg toe aan beschikbare producten
+                // If the product is not in the list, and is in stock, add to AvailableProducts
                 if (!isInGroceryList && product.Stock > 0) AvailableProducts.Add(product);
             }
         }
@@ -69,21 +69,21 @@ namespace Grocery.App.ViewModels
         public void AddProduct(Product product)
         {
 
-            //Controleerd of het product bestaat en dat de Id > 0
-            if(product == null || product.Id <= 0) return; //mogelijk error handling toepassen in de toekomst 
+            // Checks if product exists and if Id is not smaller or equal to 0
+            if(product == null || product.Id <= 0) return; // Possible error handling for the future
 
-            //Maakt een GroceryListItem met Id 0 en vul de juiste productid en grocerylistid
+            // Makes a GroceryListItem with Id 0, and fills in the correct ProductId and GroceryListId
             var newItem = new GroceryListItem(0, GroceryList.Id, product.Id, 1);
 
-            //Voegt het GroceryListItem toe aan de dataset
+            // Adds the item to the GroceryList dataset
             _groceryListItemsService.Add(newItem);
 
 
-            //Werkt de voorraad (Stock) van het product bij en zorgt dat deze wordt vastgelegd
+            // Updates the stock of the product
             product.Stock -= 1;
             _productService.Update(product);
 
-            //Werkt de lijst AvailableProducts bij
+            // Updates the AvailableProducts list
             GetAvailableProducts();
 
             OnGroceryListChanged(GroceryList);
